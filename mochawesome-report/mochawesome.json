@@ -1,0 +1,121 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-10-25T15:41:18.438Z",
+    "end": "2025-10-25T15:41:24.702Z",
+    "duration": 6264,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "f58b3f28-5a0d-4cf3-8160-7347b08aafdc",
+      "title": "",
+      "fullFile": "D:\\QA_Bootcamp\\Materi\\sesi-9\\tests\\test_sesi9.js",
+      "file": "\\tests\\test_sesi9.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bc13c54e-bcf7-471a-a15f-65c5a089c177",
+          "title": "Google Search Test",
+          "fullFile": "D:\\QA_Bootcamp\\Materi\\sesi-9\\tests\\test_sesi9.js",
+          "file": "\\tests\\test_sesi9.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Login sukses menampilkan inventory",
+              "fullTitle": "Google Search Test Login sukses menampilkan inventory",
+              "timedOut": false,
+              "duration": 4348,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const options = new chrome.Options();\noptions.addArguments('--incognito'); // option ke chrome supaya gaada popup password nya\ndriver = await new Builder()\n    .forBrowser('chrome')\n    .setChromeOptions(options)\n    .build();\nawait driver.get('https://www.saucedemo.com');\nconst title = await driver.getTitle();\n// assert: memastikan object sama persis\nassert.strictEqual(title, 'Swag Labs');\n// inputs\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'))\nlet inputPassword = await driver.findElement(By.xpath('//*[@data-test=\"password\"]'))\nlet buttonLogin = await driver.findElement(By.css('[data-test=\"login-button\"]'))\nawait inputUsername.sendKeys('standard_user')\nawait inputPassword.sendKeys('secret_sauce')\nawait buttonLogin.click()\n\n// tunggu element tampil\nlet buttonCart = await driver.wait(\n    until.elementLocated(By.xpath('//*[@data-test=\"shopping-cart-link\"]')), \n    10000\n);\nawait driver.wait(until.elementIsVisible(buttonCart), 5000, 'Shopping cart harus tampil');\n\n// assert: elememt ada\nassert.strictEqual(await buttonCart.isDisplayed(), true, 'Shopping cart harus tampil')\n// assert: text dalam element benar\nlet textAppLogo = await driver.findElement(By.className('app_logo'))\nlet logotext = await textAppLogo.getText()\nassert.strictEqual(logotext, 'Swag Labs')\nawait driver.sleep(1700)\n// dropdown search\nlet dropdownSort = await driver.findElement(By.xpath('//select[@data-test=\"product-sort-container\"]'))\nawait dropdownSort.click()\nlet option = await driver.findElement(By.xpath('//option[text()=\"Name (Z to A)\"]'));\nawait option.click();\nawait driver.quit();",
+              "err": {},
+              "uuid": "86aa8202-6114-4229-ac9d-626c02851b6a",
+              "parentUUID": "bc13c54e-bcf7-471a-a15f-65c5a089c177",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Mengurutkan produk Z-A dan verifikasi urutan",
+              "fullTitle": "Google Search Test Mengurutkan produk Z-A dan verifikasi urutan",
+              "timedOut": false,
+              "duration": 1910,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const options = new chrome.Options();\noptions.addArguments(\"--headless\");\ndriver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();\nawait driver.get('https://www.saucedemo.com');\n// login terlebih dahulu\nconst inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'))\nconst inputPassword = await driver.findElement(By.css('[data-test=\"password\"]'))\nconst buttonLogin = await driver.findElement(By.css('[data-test=\"login-button\"]'))\nawait inputUsername.sendKeys('standard_user')\nawait inputPassword.sendKeys('secret_sauce')\nawait buttonLogin.click()\n// pastikan halaman inventory tampil\nconst inventoryContainer = await driver.wait(\n    until.elementLocated(By.css('.inventory_list')),\n    10000\n);\nawait driver.wait(until.elementIsVisible(inventoryContainer), 5000);\n// pilih sorting Z-A\nconst dropdownSort = await driver.findElement(By.css('[data-test=\"product-sort-container\"]'))\nawait dropdownSort.click()\nconst option = await driver.findElement(By.xpath('//option[text()=\"Name (Z to A)\"]'));\nawait option.click();\n// verifikasi nama produk terurut Z-A\nconst titleElements = await driver.findElements(By.css('.inventory_item_name'))\nconst names = []\nfor (const el of titleElements) {\n    names.push(await el.getText())\n}\nconst sortedDesc = [...names].sort((a, b) => b.localeCompare(a))\nassert.deepStrictEqual(names, sortedDesc)\nawait driver.quit()",
+              "err": {},
+              "uuid": "02e4bf19-b22f-44fb-a602-ae68328c230e",
+              "parentUUID": "bc13c54e-bcf7-471a-a15f-65c5a089c177",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "86aa8202-6114-4229-ac9d-626c02851b6a",
+            "02e4bf19-b22f-44fb-a602-ae68328c230e"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 6258,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 60000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "10.8.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report"
+      },
+      "version": "6.3.0"
+    }
+  }
+}
