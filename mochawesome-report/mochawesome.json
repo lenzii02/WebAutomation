@@ -1,14 +1,14 @@
 {
   "stats": {
     "suites": 1,
-    "tests": 2,
-    "passes": 2,
+    "tests": 1,
+    "passes": 1,
     "pending": 0,
     "failures": 0,
-    "start": "2025-10-25T15:41:18.438Z",
-    "end": "2025-10-25T15:41:24.702Z",
-    "duration": 6264,
-    "testsRegistered": 2,
+    "start": "2025-10-30T10:01:28.367Z",
+    "end": "2025-10-30T10:01:30.435Z",
+    "duration": 2068,
+    "testsRegistered": 1,
     "passPercent": 100,
     "pendingPercent": 0,
     "other": 0,
@@ -18,68 +18,68 @@
   },
   "results": [
     {
-      "uuid": "f58b3f28-5a0d-4cf3-8160-7347b08aafdc",
+      "uuid": "f5bd10a3-0c68-43d6-b14a-90d5dcdd2f75",
       "title": "",
-      "fullFile": "D:\\QA_Bootcamp\\Materi\\sesi-9\\tests\\test_sesi9.js",
-      "file": "\\tests\\test_sesi9.js",
+      "fullFile": "D:\\QA_Bootcamp\\Tugas Sesi 10\\WebAutomation\\tests\\sesi11.js",
+      "file": "\\tests\\sesi11.js",
       "beforeHooks": [],
       "afterHooks": [],
       "tests": [],
       "suites": [
         {
-          "uuid": "bc13c54e-bcf7-471a-a15f-65c5a089c177",
+          "uuid": "8e614510-56e2-4790-b6bf-18a37bf86a84",
           "title": "Google Search Test",
-          "fullFile": "D:\\QA_Bootcamp\\Materi\\sesi-9\\tests\\test_sesi9.js",
-          "file": "\\tests\\test_sesi9.js",
+          "fullFile": "D:\\QA_Bootcamp\\Tugas Sesi 10\\WebAutomation\\tests\\sesi11.js",
+          "file": "\\tests\\sesi11.js",
           "beforeHooks": [],
-          "afterHooks": [],
+          "afterHooks": [
+            {
+              "title": "\"after each\" hook in \"Google Search Test\"",
+              "fullTitle": "Google Search Test \"after each\" hook in \"Google Search Test\"",
+              "timedOut": false,
+              "duration": 0,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "if (this.currentTest.state === 'failed') {\n    let ss_full = await driver.takeScreenshot();\n    fs.writeFileSync(\"ss failed: \" + this.currentTest.title + \".png\", Buffer.from(ss_full, \"base64\")); // Or your desired path\n}",
+              "err": {},
+              "uuid": "7d00df48-81e5-4310-b579-4c288fb83da6",
+              "parentUUID": "8e614510-56e2-4790-b6bf-18a37bf86a84",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
           "tests": [
             {
-              "title": "Login sukses menampilkan inventory",
-              "fullTitle": "Google Search Test Login sukses menampilkan inventory",
+              "title": "Cek Visual halaman login",
+              "fullTitle": "Google Search Test Cek Visual halaman login",
               "timedOut": false,
-              "duration": 4348,
+              "duration": 2064,
               "state": "passed",
               "speed": "slow",
               "pass": true,
               "fail": false,
               "pending": false,
               "context": null,
-              "code": "const options = new chrome.Options();\noptions.addArguments('--incognito'); // option ke chrome supaya gaada popup password nya\ndriver = await new Builder()\n    .forBrowser('chrome')\n    .setChromeOptions(options)\n    .build();\nawait driver.get('https://www.saucedemo.com');\nconst title = await driver.getTitle();\n// assert: memastikan object sama persis\nassert.strictEqual(title, 'Swag Labs');\n// inputs\nlet inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'))\nlet inputPassword = await driver.findElement(By.xpath('//*[@data-test=\"password\"]'))\nlet buttonLogin = await driver.findElement(By.css('[data-test=\"login-button\"]'))\nawait inputUsername.sendKeys('standard_user')\nawait inputPassword.sendKeys('secret_sauce')\nawait buttonLogin.click()\n\n// tunggu element tampil\nlet buttonCart = await driver.wait(\n    until.elementLocated(By.xpath('//*[@data-test=\"shopping-cart-link\"]')), \n    10000\n);\nawait driver.wait(until.elementIsVisible(buttonCart), 5000, 'Shopping cart harus tampil');\n\n// assert: elememt ada\nassert.strictEqual(await buttonCart.isDisplayed(), true, 'Shopping cart harus tampil')\n// assert: text dalam element benar\nlet textAppLogo = await driver.findElement(By.className('app_logo'))\nlet logotext = await textAppLogo.getText()\nassert.strictEqual(logotext, 'Swag Labs')\nawait driver.sleep(1700)\n// dropdown search\nlet dropdownSort = await driver.findElement(By.xpath('//select[@data-test=\"product-sort-container\"]'))\nawait dropdownSort.click()\nlet option = await driver.findElement(By.xpath('//option[text()=\"Name (Z to A)\"]'));\nawait option.click();\nawait driver.quit();",
+              "code": "// visit page\ndriver = await new Builder().forBrowser('chrome').build();\nawait driver.get('https://www.saucedemo.com');\nconst title = await driver.getTitle();\nassert.strictEqual(title, 'Swag Labs');\n// screenshot keadaan login page sekarang, current.png\nlet screenshot = await driver.takeScreenshot();\nlet imgBuffer = Buffer.from(screenshot, \"base64\");\nfs.writeFileSync(\"current.png\", imgBuffer);\n// ambil baseline untuk komparasi\n// jika belum ada baseline, jadikan current.png sebagai baseline\nif (!fs.existsSync(\"baseline.png\")) {\n    fs.copyFileSync(\"current.png\", \"baseline.png\");\n    console.log(\"Baseline image saved.\");\n}\n// Compare baseline.png dan current.png apakah sama\nlet img1 = PNG.sync.read(fs.readFileSync(\"baseline.png\"));\nlet img2 = PNG.sync.read(fs.readFileSync(\"current.png\"));\nlet { width, height } = img1;\nlet diff = new PNG({ width, height });\nlet numDiffPixels = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0.1 });\nfs.writeFileSync(\"diff.png\", PNG.sync.write(diff));\nif (numDiffPixels > 0) {\n    console.log(`Visual differences found! Pixels different: ${numDiffPixels}`);\n} else {\n    console.log(\"No visual differences found.\");\n}\nassert.strictEqual(numDiffPixels, 0, \"Tidak ada perbedaan visual antara baseline dan current\");\ndriver.quit()",
               "err": {},
-              "uuid": "86aa8202-6114-4229-ac9d-626c02851b6a",
-              "parentUUID": "bc13c54e-bcf7-471a-a15f-65c5a089c177",
-              "isHook": false,
-              "skipped": false
-            },
-            {
-              "title": "Mengurutkan produk Z-A dan verifikasi urutan",
-              "fullTitle": "Google Search Test Mengurutkan produk Z-A dan verifikasi urutan",
-              "timedOut": false,
-              "duration": 1910,
-              "state": "passed",
-              "speed": "slow",
-              "pass": true,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "const options = new chrome.Options();\noptions.addArguments(\"--headless\");\ndriver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();\nawait driver.get('https://www.saucedemo.com');\n// login terlebih dahulu\nconst inputUsername = await driver.findElement(By.css('[data-test=\"username\"]'))\nconst inputPassword = await driver.findElement(By.css('[data-test=\"password\"]'))\nconst buttonLogin = await driver.findElement(By.css('[data-test=\"login-button\"]'))\nawait inputUsername.sendKeys('standard_user')\nawait inputPassword.sendKeys('secret_sauce')\nawait buttonLogin.click()\n// pastikan halaman inventory tampil\nconst inventoryContainer = await driver.wait(\n    until.elementLocated(By.css('.inventory_list')),\n    10000\n);\nawait driver.wait(until.elementIsVisible(inventoryContainer), 5000);\n// pilih sorting Z-A\nconst dropdownSort = await driver.findElement(By.css('[data-test=\"product-sort-container\"]'))\nawait dropdownSort.click()\nconst option = await driver.findElement(By.xpath('//option[text()=\"Name (Z to A)\"]'));\nawait option.click();\n// verifikasi nama produk terurut Z-A\nconst titleElements = await driver.findElements(By.css('.inventory_item_name'))\nconst names = []\nfor (const el of titleElements) {\n    names.push(await el.getText())\n}\nconst sortedDesc = [...names].sort((a, b) => b.localeCompare(a))\nassert.deepStrictEqual(names, sortedDesc)\nawait driver.quit()",
-              "err": {},
-              "uuid": "02e4bf19-b22f-44fb-a602-ae68328c230e",
-              "parentUUID": "bc13c54e-bcf7-471a-a15f-65c5a089c177",
+              "uuid": "f22a8f5a-82b2-4aca-bed9-2d8e5837a494",
+              "parentUUID": "8e614510-56e2-4790-b6bf-18a37bf86a84",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "86aa8202-6114-4229-ac9d-626c02851b6a",
-            "02e4bf19-b22f-44fb-a602-ae68328c230e"
+            "f22a8f5a-82b2-4aca-bed9-2d8e5837a494"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 6258,
+          "duration": 2064,
           "root": false,
           "rootEmpty": false,
           "_timeout": 60000
@@ -112,9 +112,7 @@
       "version": "7.1.4"
     },
     "marge": {
-      "options": {
-        "reportDir": "mochawesome-report"
-      },
+      "options": null,
       "version": "6.3.0"
     }
   }
